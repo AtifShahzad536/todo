@@ -39,6 +39,10 @@ if (!dbUrl) {
   console.error('MONGODB_URI is not defined in .env file');
   process.exit(1);
 }
+app.get('/', (req, res) => {
+  res.send('Todo backend is live!');
+});
+
 mongoose.connect(dbUrl)
 .then(()=>{
 app.listen(port,()=>{
