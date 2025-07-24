@@ -6,7 +6,11 @@ const homeRouter = require('./routes/home');
 const rootDir = require('./utils/pathUtil');
 const path = require('path');
 const app=express();
-const port=3001;
+require('dotenv').config();
+
+
+const port = process.env.port || 3001;
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
@@ -30,7 +34,11 @@ const storage = multer.diskStorage({
 
 app.use(multer({ storage,filefilter }).single('photo')); 
 app.use(homeRouter);
-const dbUrl="mongodb+srv://atifjaan536:atif903@todo.eqlhwmi.mongodb.net/?retryWrites=true&w=majority&appName=todo"
+const dbUrl=process.env.MONGODB_URI;
+if (!dbUrl) {
+  console.error('MONGODB_URI is not defined in .env file');
+  process.exit(1);
+}
 mongoose.connect(dbUrl)
 .then(()=>{
 app.listen(port,()=>{
